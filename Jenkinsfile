@@ -1,25 +1,23 @@
 pipeline {
-  agent any
+  agent none
   stages {
     stage('test') {
       parallel {
         stage('test') {
           steps {
-            sh 'ls'
-            echo '"Hello world"'
+            sh 'touch bonjour'
+            echo 'Hello phase de test'
             sh 'mvn clean test'
-            git(url: 'https://github.com/jenny973/java_test.git', branch: 'main')
           }
         }
 
         stage('build') {
+          environment {
+            JAVA_HOME = '/usr/lib/java-8-openjdk'
+          }
           steps {
-            sh 'mkdir sparkjava'
-            dir(path: 'sparkjava/') {
-              pwd()
-            }
-
-            git 'https://github.com/kliakos/sparkjava-war-example'
+            sh 'git clone https://github.com/kliakos/sparkjava-war-example.git'
+            sh 'cd sparkjava-war-example'
             sh 'mvn clean install'
             archiveArtifacts 'target/*.war'
           }
@@ -36,7 +34,7 @@ pipeline {
 
     stage('end') {
       steps {
-        sh 'echo"fin des etapes"'
+        sh 'echo"fin des taches, ça s\'est bien passé"'
       }
     }
 
