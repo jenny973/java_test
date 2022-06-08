@@ -17,7 +17,7 @@ pipeline {
 
     stage('end') {
       steps {
-        sh 'echo"fin des taches, ça s\'est bien passé"'
+        sh 'echo "fin des taches, ça s\'est bien passé"'
       }
     }
 
